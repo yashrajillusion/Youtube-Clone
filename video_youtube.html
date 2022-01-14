@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="youtube.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav_logo">
+          <span id="menu" class="material-icons-outlined"> menu </span>
+          <div>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyECrSKwkFPn8pn1ELLVV6OSyBmr4i2GacMRhr8KPtiijAU-wRAWLlSNnXb412LQJWgOc&usqp=CAU"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="search_mic">
+          <input type="text" placeholder="Search" name="" id="video" />
+          <button onclick="searchVideo()">
+            <span class="material-icons-outlined"> search </span>
+            <div class="hidden">Search</div>
+          </button>
+          <div>
+            <span id="mic" class="material-icons-outlined"> mic </span>
+            <div class="hidden1">Search with your voice</div>
+          </div>
+        </div>
+        <div class="right_nav">
+          <div>
+            <span class="material-icons-outlined"> video_call </span>
+            <div class="hidden">Create</div>
+          </div>
+          <div>
+            <span class="material-icons-outlined"> apps </span>
+            <div class="hidden">YouTube apps</div>
+          </div>
+          <div>
+            <span class="material-icons-outlined"> notifications_none </span>
+            <div class="hidden">Notification</div>
+          </div>
+          <span class="material-icons-outlined"> account_circle </span>
+        </div>
+      </div>
+    </nav>
+    <div class="video_container">
+      <div class="video_big"></div>
+      <div class="side_video">
+        <!-- <div>
+          <img
+            class="side_img"
+            src="https://i.ytimg.com/vi/NBTy-fK0qQs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCEpJuwlI0gxPyXGjIujBHRGKgOew"
+            alt=""
+          />
+          <div>
+            <h4>Top10 superhits Arjit sing MP3 songs</h4>
+            <p>News18 India</p>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  let clicked_video = JSON.parse(localStorage.getItem("clicked_video"));
+  let youtube_videos = JSON.parse(localStorage.getItem("youtube_videos"));
+  // console.log(youtube_videos)
+let videoId;
+  if (clicked_video.id != undefined) {
+    videoId = clicked_video.id;
+  }
+  if (clicked_video.videoId != undefined) {
+    videoId = clicked_video.videoId;
+  }
+  
+  let video = document.querySelector(".video_big");
+  let iframe = document.createElement("iframe");
+  iframe.src = `https://www.youtube.com/embed/${videoId}`;
+  iframe.height = "100%";
+  iframe.setAttribute("allowfullscreen", "true");
+  iframe.width = "100%";
+  let title = document.createElement("h4");
+  title.textContent = clicked_video.snippet.title;
+  video.append(iframe, title);
+
+  // right side video//
+  
+ sideData()
+  function sideData(){
+    let side = document.querySelector('.side_video');
+  side.textContent = null;
+    youtube_videos.forEach((el)=>{
+      let img = document.createElement('img');
+      img.setAttribute('class',"side_img");
+      img.src = el.snippet.thumbnails.medium.url;
+      
+      let div = document.createElement('div');
+      let h4 = document.createElement('h4');
+      h4.textContent = el.snippet.title;
+      
+      let p = document.createElement('p');
+      p.textContent = el.snippet.channelTitle;
+      
+      div.append(h4,p);
+      let divfinal = document.createElement("div");
+      divfinal.append(img,div)
+      side.append(divfinal)
+
+      // side.innerHTML += `<div >
+      //     <img
+      //       class="side_img"
+      //       src="${el.snippet.thumbnails.medium.url}"
+      //       alt=""
+      //     />
+      //     <div>
+      //       <h4>${el.snippet.title}</h4>
+      //       <p>${el.snippet.channelTitle}</p>
+      //     </div>`
+      
+      let data_to_send = {
+        snippet : el.snippet,
+        videoId: el.id.videoId,
+        id: el.id
+      };
+      divfinal.onclick = () => {
+        showVideo(data_to_send);
+      };
+      // divfinal.addEventListener('click',function(){
+      //   console.log("yes")
+      //   console.log(el)
+      // })
+    })
+
+  }
+  function showVideo(data) {
+    localStorage.setItem("clicked_video", JSON.stringify(data));
+    window.location.href = "video_youtube.html";
+  }
+  
+</script>
+

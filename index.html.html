@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="youtube.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav_logo">
+          <span id="menu" class="material-icons-outlined"> menu </span>
+          <div>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyECrSKwkFPn8pn1ELLVV6OSyBmr4i2GacMRhr8KPtiijAU-wRAWLlSNnXb412LQJWgOc&usqp=CAU"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="search_mic">
+          <input type="text" placeholder="Search" name="" id="video" />
+          <button onclick="searchVideo()">
+            <span class="material-icons-outlined"> search </span>
+            <div class="hidden">Search</div>
+          </button>
+          <div>
+            <span id="mic" class="material-icons-outlined"> mic </span>
+            <div class="hidden1">Search with your voice</div>
+          </div>
+        </div>
+        <div class="right_nav">
+          <div>
+            <span class="material-icons-outlined"> video_call </span>
+            <div class="hidden">Create</div>
+          </div>
+          <div>
+            <span class="material-icons-outlined"> apps </span>
+            <div class="hidden">YouTube apps</div>
+          </div>
+          <div>
+            <span class="material-icons-outlined"> notifications_none </span>
+            <div class="hidden">Notification</div>
+          </div>
+          <span class="material-icons-outlined"> account_circle </span>
+        </div>
+      </div>
+    </nav>
+    <div class="leftnav">
+      <a href="#" class="links active"
+        ><span class="material-icons-outlined"> home </span>Home</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> explore </span>Explore</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> subscriptions </span
+        >subscriptions</a
+      >
+      <hr class="seperator" />
+      <a href="#"
+        ><span class="material-icons-outlined"> video_library </span>Library</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> history </span>History</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> smart_display </span>Your
+        videos</a
+      >
+      <a href="#">
+        <span class="material-icons-outlined"> watch_later </span>Watch later</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> thumb_up </span>Liked videos</a
+      >
+      <hr class="seperator" />
+      <a href="#"
+        ><span class="material-icons-outlined"> theaters </span>Movies</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> sports_esports </span>Gaming</a
+      >
+
+      <a href="#"><span class="material-icons-outlined"> sensors </span>Live</a>
+      <a href="#"
+        ><span class="material-icons-outlined"> lightbulb </span>Learning</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> sports_score </span>Sports</a
+      >
+      <hr class="seperator" />
+      <a href="#"
+        ><span class="material-icons-outlined"> settings </span>Settings</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> flag </span>Report history</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> help_outline </span>Help</a
+      >
+      <a href="#"
+        ><span class="material-icons-outlined"> feedback </span>Send feedback</a
+      >
+    </div>
+    <div class="filter">
+      <button class="filter-option active">All</button>
+      <button class="filter-option">Music</button>
+      <button class="filter-option">Mix</button>
+      <button class="filter-option">Lives</button>
+      <button class="filter-option">Motivation</button>
+      <button class="filter-option">Comedies</button>
+      <button class="filter-option">Python</button>
+      <button class="filter-option">Artificial inteligence</button>
+      <button class="filter-option">Machine learning</button>
+      <button class="filter-option">Marvel</button>
+      <button class="filter-option">Artificial inteligence</button>
+      <button class="filter-option">Machine learning</button>
+      <button class="filter-option">Marvel</button>
+    </div>
+
+    <!-- video -->
+    <div class="result">
+      <!-- <div class="video">
+        <img src="" class="thumbnails" alt="" />
+        <div class="content">
+          <img src="" class="channel-icon" alt="" />
+          <div class="info">
+            <h4 class="tittle">Youtube</h4>
+            <p class="channel-name">Moder web</p>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <!-- <div id="search"></div> -->
+  </body>
+</html>
+
+<script>
+  const result = document.querySelector(".result");
+  mostPopular();
+  async function mostPopular() {
+    try {
+      const url1 = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&key=AIzaSyA_fpoGaLDsz872KoQmph_sfBCVn0A1YNQ&maxResults=50`;
+      let res = await fetch(url1);
+      let data = await res.json();
+      let video = data.items;
+      appendVideos(video);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function channelIcon(snippet) {
+    try {
+      const url2 = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&key=AIzaSyA_fpoGaLDsz872KoQmph_sfBCVn0A1YNQ&id=${snippet.channelId}`;
+      let res = await fetch(url2);
+      let data = await res.json();
+      snippet["channelImg"] = data.items[0].snippet.thumbnails.default.url;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async function searchVideo() {
+    try {
+      let video = document.getElementById("video").value;
+      const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${video}&type=video&key=AIzaSyA_fpoGaLDsz872KoQmph_sfBCVn0A1YNQ&maxResults=20`;
+      let res = await fetch(url);
+      let data = await res.json();
+      let videos = data.items;
+      appendVideos(videos);
+    } catch (err) {
+      console.log(err, "try next time");
+    }
+  }
+
+  const appendVideos = (items) => {
+    result.textContent = null;
+    items.forEach(async ({ id, snippet, id: { videoId } }) => {
+      let y = await channelIcon(snippet);
+      let img = document.createElement("img");
+      img.setAttribute("class", "channel-icon");
+      img.src = snippet.channelImg;
+      let div = document.createElement("div");
+      div.setAttribute("class", "info");
+      let h4 = document.createElement("h4");
+      h4.setAttribute("class", "tittle");
+      h4.textContent = snippet.title;
+      let p = document.createElement("p");
+      p.setAttribute("class", "channel-name");
+      p.textContent = snippet.channelTitle;
+      div.append(h4, p);
+
+      let div2 = document.createElement("div");
+      div2.setAttribute("class", "content");
+      div2.append(img, div);
+      let img1 = document.createElement("img");
+      img1.setAttribute("class", "thumbnails");
+      img1.src = snippet.thumbnails.medium.url;
+      let final_div = document.createElement("div");
+      final_div.setAttribute("class", "video");
+      final_div.append(img1, div2);
+      result.append(final_div);
+
+      let data_to_send = {
+        snippet,
+        id: id,
+        videoId,
+      };
+
+      final_div.onclick = () => {
+        showVideo(data_to_send);
+      };
+    });
+    localStorage.setItem("youtube_videos", JSON.stringify(items));
+  };
+
+  function showVideo(data) {
+    localStorage.setItem("clicked_video", JSON.stringify(data));
+    window.location.href = "video_youtube.html";
+  }
+</script>
+
+<!-- 
+// let y = channelIcon(snippet);
+      // y.then(function () {
+      //   console.log(y);
+      //   result.innerHTML += `<div class="video">
+      //   <img src="${snippet.thumbnails.medium.url}" class="thumbnails" alt="" />
+      //   <div class="content">
+      //     <img src="${res.channelImg}" class="channel-icon" alt="" />
+      //     <div class="info">
+      //       <h4 class="tittle">${snippet.title}</h4>
+      //       <p class="channel-name">${snippet.channelTitle}</p>
+      //     </div>
+      //   </div>
+      // </div>`;
+      // }).catch(function (rej) {
+      //   console.log(rej);
+      // }); -->
